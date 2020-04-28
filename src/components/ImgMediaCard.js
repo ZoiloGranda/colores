@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,29 +8,31 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
  root: {
-  maxWidth: 345,
- },
+  maxWidth: 345
+ }
 });
 
-export default function ImgMediaCard() {
+export default function ImgMediaCard(props) {
  const classes = useStyles();
+ let validColor = props.color.tags && props.color.tags[0]
 
- return (
-  <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt="Contemplative Reptile"
-          height="100"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Lizard
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
- );
+ // return ({
+  if(validColor) {
+   return (<Card
+    className={classes.root}
+    style={{backgroundColor:'#'+ props.color.hex}}
+    >
+    <CardActionArea>
+     <CardContent>
+      <Typography variant="h5" component="h2">
+       {props.color.tags[0].name}
+      </Typography>
+     </CardContent>
+    </CardActionArea>
+   </Card>)
+
+  }else {
+   return <p>No color data</p>
+  }
+ // });
 }

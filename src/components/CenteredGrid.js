@@ -9,7 +9,6 @@ class CenteredGrid extends React.Component {
  constructor(props) {
   super(props);
   console.log(props);
-
  }
  
  classes = this.useStyles();
@@ -19,34 +18,35 @@ class CenteredGrid extends React.Component {
  }
  
  getColors() {
-  fetch('http://www.colr.org/json/colors/random/12')
+  fetch('http://www.colr.org/json/colors/random/24')
   .then((data) => data.json())
   .then((parsedData) => {
-   console.log(parsedData)
-   this.props.setColores(parsedData.colors)
-   // this.fillEmptyColors(parsedData.colors)
+   this.fillEmptyColors(parsedData.colors)
   })
  }
  
- // async fillEmptyColors(colors){
- //  let filledColors = await colors.map(async (color, index)=>{
- //   if (color.hex) {
- //    return color
- //   }else{
- //    return await this.getRandomColor()
- //   }
- //  })
- //  console.log({filledColors});
- // }
+ fillEmptyColors(colors){
+  let filledColors = colors.map(async (color, index)=>{
+   if (color.hex) {
+    return color
+   }else{
+    return await this.getRandomColor()
+   }
+  })
+  Promise.all(filledColors).then(values=>{
+   this.props.setColores(values)
+  })
+  console.log({filledColors});
+ }
  
- // getRandomColor(){
- //  return fetch('http://www.colr.org/json/colors/random/1')
- //  .then((data) => data.json())
- //  .then((parsedData) => {
- //   console.log(parsedData.colors)
- //   return parsedData.colors
- //  })
- // }
+ getRandomColor(){
+  return fetch('http://www.colr.org/json/colors/random/1')
+  .then((data) => data.json())
+  .then((parsedData) => {
+   console.log(parsedData.colors[0])
+   return parsedData.colors[0]
+  })
+ }
 
  useStyles() {
   return makeStyles((theme) => ({
@@ -56,7 +56,7 @@ class CenteredGrid extends React.Component {
    paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
    }
   }));
  }
@@ -69,7 +69,7 @@ class CenteredGrid extends React.Component {
      return(
      <Grid item={true} xs={3} key={index}>
       <Paper className={this.classes.paper}>
-       <ImgMediaCard></ImgMediaCard>
+       <ImgMediaCard color={color}></ImgMediaCard>
       </Paper>
      </Grid>)
      })}
