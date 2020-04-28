@@ -18,7 +18,7 @@ class CenteredGrid extends React.Component {
  }
  
  getColors() {
-  fetch('http://www.colr.org/json/colors/random/24')
+  fetch('http://www.colr.org/json/colors/random/20')
   .then((data) => data.json())
   .then((parsedData) => {
    this.fillEmptyColors(parsedData.colors)
@@ -56,7 +56,7 @@ class CenteredGrid extends React.Component {
    paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
    }
   }));
  }
@@ -64,10 +64,10 @@ class CenteredGrid extends React.Component {
  render() {
   return (
    <div className={this.classes.root}>
-   <Grid container={true} spacing={1}>
+   <Grid container spacing={1}>
     {this.props.colores.map((color, index)=>{
      return(
-     <Grid item={true} xs={3} key={index}>
+     <Grid item xs={3} key={index}>
       <Paper className={this.classes.paper}>
        <ImgMediaCard color={color}></ImgMediaCard>
       </Paper>
