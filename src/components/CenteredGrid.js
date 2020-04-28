@@ -1,61 +1,92 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import ImgMediaCard from './ImgMediaCard'
+import ImgMediaCard from './ImgMediaCard';
+import {connect} from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
- root: {
-  flexGrow: 1
- },
- paper: {
-  padding: theme.spacing(2),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
+class CenteredGrid extends React.Component {
+ constructor(props) {
+  super(props);
+  console.log(props);
+
  }
-}));
+ 
+ classes = this.useStyles();
+ 
+ componentDidMount() {
+  this.getColors()
+ }
+ 
+ getColors() {
+  fetch('http://www.colr.org/json/colors/random/12')
+  .then((data) => data.json())
+  .then((parsedData) => {
+   console.log(parsedData)
+   this.props.setColores(parsedData.colors)
+   // this.fillEmptyColors(parsedData.colors)
+  })
+ }
+ 
+ // async fillEmptyColors(colors){
+ //  let filledColors = await colors.map(async (color, index)=>{
+ //   if (color.hex) {
+ //    return color
+ //   }else{
+ //    return await this.getRandomColor()
+ //   }
+ //  })
+ //  console.log({filledColors});
+ // }
+ 
+ // getRandomColor(){
+ //  return fetch('http://www.colr.org/json/colors/random/1')
+ //  .then((data) => data.json())
+ //  .then((parsedData) => {
+ //   console.log(parsedData.colors)
+ //   return parsedData.colors
+ //  })
+ // }
 
-export default function CenteredGrid() {
- const classes = useStyles();
+ useStyles() {
+  return makeStyles((theme) => ({
+   root: {
+    flexGrow: 1
+   },
+   paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary
+   }
+  }));
+ }
 
- return (<div className={classes.root}>
-  <Grid container spacing={1}>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
+ render() {
+  return (
+   <div className={this.classes.root}>
+   <Grid container={true} spacing={1}>
+    {this.props.colores.map((color, index)=>{
+     return(
+     <Grid item={true} xs={3} key={index}>
+      <Paper className={this.classes.paper}>
+       <ImgMediaCard></ImgMediaCard>
+      </Paper>
+     </Grid>)
+     })}
    </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-   <Grid item xs={3}>
-    <Paper className={classes.paper}><ImgMediaCard></ImgMediaCard></Paper>
-   </Grid>
-  </Grid>
- </div>);
+  </div>);
+ }
 }
+
+const mapStateToProps = state => ({colores: state.colores})
+
+const mapDispatchToProps = dispatch => ({
+ setColores(colores){
+  dispatch({
+   type:'SET_COLORES',
+   colores
+  })
+ }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CenteredGrid)
