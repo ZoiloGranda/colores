@@ -4,13 +4,9 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ImgMediaCard from './ImgMediaCard';
 import {connect} from 'react-redux';
+import './CenteredGrid.css'
 
-class CenteredGrid extends React.Component {
- constructor(props) {
-  super(props);
-  console.log(props);
- }
- 
+class CenteredGrid extends React.Component { 
  classes = this.useStyles();
  
  componentDidMount() {
@@ -36,14 +32,12 @@ class CenteredGrid extends React.Component {
   Promise.all(filledColors).then(values=>{
    this.props.setColores(values)
   })
-  console.log({filledColors});
  }
  
  getRandomColor(){
   return fetch('http://www.colr.org/json/colors/random/1')
   .then((data) => data.json())
   .then((parsedData) => {
-   console.log(parsedData.colors[0])
    return parsedData.colors[0]
   })
  }
@@ -68,7 +62,7 @@ class CenteredGrid extends React.Component {
     {this.props.colores.map((color, index)=>{
      return(
      <Grid item xs={3} key={index}>
-      <Paper className={this.classes.paper}>
+      <Paper className={this.classes.paper+' pointer'}>
        <ImgMediaCard color={color}></ImgMediaCard>
       </Paper>
      </Grid>)
