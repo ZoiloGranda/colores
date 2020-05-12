@@ -1,4 +1,10 @@
+# Colores
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Heroku
+
+Heroku runs `npm run build` and `npm start` on every deploy
 
 ## Available Scripts
 
