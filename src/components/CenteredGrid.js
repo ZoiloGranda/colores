@@ -14,7 +14,7 @@ class CenteredGrid extends React.Component {
  }
  
  getColors() {
-  fetch('http://www.colr.org/json/colors/random/20')
+  fetch('https://www.colr.org/json/colors/random/20')
   .then((data) => data.json())
   .then((parsedData) => {
    this.fillEmptyColors(parsedData.colors)
